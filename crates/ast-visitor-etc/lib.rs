@@ -52,12 +52,9 @@ pub fn eval_expr(expr: &Expr) -> f64 {
                 BinaryOp::Div => a / b,
             }
         }
-        Unary(e) => {
-            let a = eval_expr(&e.expr);
-            match e.op {
-                UnaryOp::Neg => -a,
-            }
-        }
+        Unary(e) => match e.op {
+            UnaryOp::Neg => -eval_expr(&e.expr),
+        },
         Group(e) => eval_expr(&e.expr),
         Num(e) => e.lit,
     }
