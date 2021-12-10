@@ -3,6 +3,10 @@
 version = 3
 
 [[package]]
+name = "ast-visitor-etc"
+version = "0.1.0"
+
+[[package]]
 name = "iter-freq"
 version = "0.1.0"
 
