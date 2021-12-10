@@ -92,29 +92,6 @@ pub fn lisp_printer(expr: &Expr) -> String {
     }
 }
 
-// See: https://wiki.c2.com/?PostfixNotation
-pub fn rpn_printer(expr: &Expr) -> String {
-    use Expr::*;
-    match expr {
-        Binary(e) => {
-            let a = rpn_printer(&e.lhs);
-            let b = rpn_printer(&e.rhs);
-            let op_repr = match e.op {
-                BinaryOp::Add => "+",
-                BinaryOp::Sub => "-",
-                BinaryOp::Mul => "*",
-                BinaryOp::Div => "/",
-            };
-            format!("{} {} {}", a, b, op_repr)
-        }
-        Unary(e) => match e.op {
-            UnaryOp::Neg => format!("-{}", rpn_printer(&e.expr)),
-        },
-        Group(e) => rpn_printer(&e.expr),
-        Num(e) => e.lit.to_string(),
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -129,12 +106,6 @@ mod tests {
     fn test_lisp_printer() {
         let expr = mock_expr();
         assert_eq!(lisp_printer(&expr), "(+ 4 (* (+ 1 (* 2 (- 3))) 2))");
-    }
-
-    #[test]
-    fn test_rpn_printer() {
-        let expr = mock_expr();
-        assert_eq!(rpn_printer(&expr), "4 1 2 -3 * + 2 * +");
     }
 
     fn mock_expr() -> Expr {
