@@ -128,7 +128,7 @@ mod tests {
     #[test]
     fn test_lisp_printer() {
         let expr = mock_expr();
-        assert_eq!(lisp_printer(&expr), "(+ 4 (* (group (+ 1 (* 2 3))) 2))");
+        assert_eq!(lisp_printer(&expr), "(+ 4 (* (+ 1 (* 2 3)) 2))");
     }
 
     #[test]
