@@ -92,6 +92,28 @@ pub fn lispify_expr(expr: &Expr) -> String {
     }
 }
 
+pub fn postfixify_expr(expr: &Expr) -> String {
+    use Expr::*;
+    match expr {
+        Binary(e) => {
+            let a = postfixify_expr(&e.lhs);
+            let b = postfixify_expr(&e.rhs);
+            let op_repr = match e.op {
+                BinaryOp::Add => "+",
+                BinaryOp::Sub => "-",
+                BinaryOp::Mul => "*",
+                BinaryOp::Div => "/",
+            };
+            format!("{} {} {}", a, b, op_repr)
+        }
+        Unary(e) => match e.op {
+            UnaryOp::Neg => format!("- {}", postfixify_expr(&e.expr)),
+        },
+        Group(e) => postfixify_expr(&e.expr),
+        Num(e) => e.lit.to_string(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -106,6 +128,12 @@ mod tests {
     fn test_lispify_expr() {
         let expr = mock_expr();
         assert_eq!(lispify_expr(&expr), "(+ 4 (* (group (+ 1 (* 2 3))) 2))");
+    }
+
+    #[test]
+    fn test_postfixify_expr() {
+        let expr = mock_expr();
+        assert_eq!(postfixify_expr(&expr), "4 1 2 3 * + 2 * +");
     }
 
     fn mock_expr() -> Expr {
