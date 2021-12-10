@@ -126,13 +126,13 @@ mod tests {
     }
 
     #[test]
-    fn test_lispify_expr() {
+    fn test_lisp_printer() {
         let expr = mock_expr();
         assert_eq!(lisp_printer(&expr), "(+ 4 (* (group (+ 1 (* 2 3))) 2))");
     }
 
     #[test]
-    fn test_postfixify_expr() {
+    fn test_rpn_printer() {
         let expr = mock_expr();
         assert_eq!(rpn_printer(&expr), "4 1 2 3 * + 2 * +");
     }
