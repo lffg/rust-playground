@@ -60,14 +60,14 @@ pub fn eval_expr(expr: &Expr) -> f64 {
     }
 }
 
-pub fn lispify_expr(expr: &Expr) -> String {
+pub fn lisp_printer(expr: &Expr) -> String {
     fn paren<const N: usize>(label: &str, exprs: [&Expr; N]) -> String {
         let mut out = String::new();
         out.push('(');
         out.push_str(label);
         for expr in exprs {
             out.push(' ');
-            out.push_str(&lispify_expr(expr));
+            out.push_str(&lisp_printer(expr));
         }
         out.push(')');
         out
@@ -87,17 +87,18 @@ pub fn lispify_expr(expr: &Expr) -> String {
         Unary(e) => match e.op {
             UnaryOp::Neg => paren("-", [&e.expr]),
         },
-        Group(e) => paren("group", [&e.expr]),
+        Group(e) => lisp_printer(&e.expr),
         Num(e) => e.lit.to_string(),
     }
 }
 
-pub fn postfixify_expr(expr: &Expr) -> String {
+// See: https://wiki.c2.com/?PostfixNotation
+pub fn rpn_printer(expr: &Expr) -> String {
     use Expr::*;
     match expr {
         Binary(e) => {
-            let a = postfixify_expr(&e.lhs);
-            let b = postfixify_expr(&e.rhs);
+            let a = rpn_printer(&e.lhs);
+            let b = rpn_printer(&e.rhs);
             let op_repr = match e.op {
                 BinaryOp::Add => "+",
                 BinaryOp::Sub => "-",
@@ -107,9 +108,9 @@ pub fn postfixify_expr(expr: &Expr) -> String {
             format!("{} {} {}", a, b, op_repr)
         }
         Unary(e) => match e.op {
-            UnaryOp::Neg => format!("- {}", postfixify_expr(&e.expr)),
+            UnaryOp::Neg => format!("- {}", rpn_printer(&e.expr)),
         },
-        Group(e) => postfixify_expr(&e.expr),
+        Group(e) => rpn_printer(&e.expr),
         Num(e) => e.lit.to_string(),
     }
 }
@@ -127,13 +128,13 @@ mod tests {
     #[test]
     fn test_lispify_expr() {
         let expr = mock_expr();
-        assert_eq!(lispify_expr(&expr), "(+ 4 (* (group (+ 1 (* 2 3))) 2))");
+        assert_eq!(lisp_printer(&expr), "(+ 4 (* (group (+ 1 (* 2 3))) 2))");
     }
 
     #[test]
     fn test_postfixify_expr() {
         let expr = mock_expr();
-        assert_eq!(postfixify_expr(&expr), "4 1 2 3 * + 2 * +");
+        assert_eq!(rpn_printer(&expr), "4 1 2 3 * + 2 * +");
     }
 
     fn mock_expr() -> Expr {
