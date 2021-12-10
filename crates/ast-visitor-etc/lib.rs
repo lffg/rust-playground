@@ -108,7 +108,7 @@ pub fn rpn_printer(expr: &Expr) -> String {
             format!("{} {} {}", a, b, op_repr)
         }
         Unary(e) => match e.op {
-            UnaryOp::Neg => format!("- {}", rpn_printer(&e.expr)),
+            UnaryOp::Neg => format!("{} -", rpn_printer(&e.expr)),
         },
         Group(e) => rpn_printer(&e.expr),
         Num(e) => e.lit.to_string(),
@@ -122,23 +122,23 @@ mod tests {
     #[test]
     fn test_eval_expr() {
         let expr = mock_expr();
-        assert_eq!(eval_expr(&expr), 18.);
+        assert_eq!(eval_expr(&expr), -6.0);
     }
 
     #[test]
     fn test_lisp_printer() {
         let expr = mock_expr();
-        assert_eq!(lisp_printer(&expr), "(+ 4 (* (+ 1 (* 2 3)) 2))");
+        assert_eq!(lisp_printer(&expr), "(+ 4 (* (+ 1 (* 2 (- 3))) 2))");
     }
 
     #[test]
     fn test_rpn_printer() {
         let expr = mock_expr();
-        assert_eq!(rpn_printer(&expr), "4 1 2 3 * + 2 * +");
+        assert_eq!(rpn_printer(&expr), "4 1 2 3 - * + 2 * +");
     }
 
     fn mock_expr() -> Expr {
-        // 4 + (1 + 2 * 3) * 2
+        // 4 + (1 + 2 * -3) * 2
         Expr::Binary(Binary {
             op: BinaryOp::Add,
             lhs: Expr::Num(Num { lit: 4. }).into(),
@@ -151,7 +151,11 @@ mod tests {
                         rhs: Expr::Binary(Binary {
                             op: BinaryOp::Mul,
                             lhs: Expr::Num(Num { lit: 2. }).into(),
-                            rhs: Expr::Num(Num { lit: 3. }).into(),
+                            rhs: Expr::Unary(Unary {
+                                op: UnaryOp::Neg,
+                                expr: Expr::Num(Num { lit: 3. }).into(),
+                            })
+                            .into(),
                         })
                         .into(),
                     })
