@@ -108,7 +108,7 @@ pub fn rpn_printer(expr: &Expr) -> String {
             format!("{} {} {}", a, b, op_repr)
         }
         Unary(e) => match e.op {
-            UnaryOp::Neg => format!("{} -", rpn_printer(&e.expr)),
+            UnaryOp::Neg => format!("-{}", rpn_printer(&e.expr)),
         },
         Group(e) => rpn_printer(&e.expr),
         Num(e) => e.lit.to_string(),
@@ -134,7 +134,7 @@ mod tests {
     #[test]
     fn test_rpn_printer() {
         let expr = mock_expr();
-        assert_eq!(rpn_printer(&expr), "4 1 2 3 - * + 2 * +");
+        assert_eq!(rpn_printer(&expr), "4 1 2 -3 * + 2 * +");
     }
 
     fn mock_expr() -> Expr {
