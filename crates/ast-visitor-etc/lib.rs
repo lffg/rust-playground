@@ -1,5 +1,4 @@
 pub mod expr_ast {
-    #[derive(Clone, Copy)]
     pub enum BinaryOp {
         Add,
         Sub,
@@ -7,35 +6,29 @@ pub mod expr_ast {
         Div,
     }
 
-    #[derive(Clone, Copy)]
     pub enum UnaryOp {
         Neg,
     }
 
-    #[derive(Clone)]
     pub struct Binary {
         pub op: BinaryOp,
         pub lhs: Box<Expr>,
         pub rhs: Box<Expr>,
     }
 
-    #[derive(Clone)]
     pub struct Unary {
         pub op: UnaryOp,
         pub expr: Box<Expr>,
     }
 
-    #[derive(Clone)]
     pub struct Group {
         pub expr: Box<Expr>,
     }
 
-    #[derive(Clone)]
     pub struct Num {
         pub lit: f64,
     }
 
-    #[derive(Clone)]
     pub enum Expr {
         Binary(Binary),
         Unary(Unary),
