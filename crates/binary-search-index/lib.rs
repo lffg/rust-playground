@@ -28,7 +28,7 @@ mod tests {
 
     #[test]
     fn test() {
-        for i in 0usize..=15 {
+        for i in 0usize..=16 {
             let maybe_index = bs_index(LIST, &i);
             if i % 2 == 0 {
                 assert_eq!(maybe_index, None);
