@@ -1,7 +1,7 @@
 use std::cmp::Ordering;
 
 /// Performs binary search and returns the index of the found element.
-pub fn bs_index<T: Ord + std::fmt::Debug>(xs: &[T], x: &T) -> Option<usize> {
+pub fn bs_index<T: Ord>(xs: &[T], x: &T) -> Option<usize> {
     let mut upper = xs.len();
     let mut lower = 0;
 
