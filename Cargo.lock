@@ -23,6 +23,10 @@ name = "iter-with-last"
 version = "0.1.0"
 
 [[package]]
+name = "leet"
+version = "0.1.0"
+
+[[package]]
 name = "multi-test"
 version = "0.1.0"
 
