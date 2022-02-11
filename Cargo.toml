@@ -1,2 +1,2 @@
 [workspace]
-members = ["crates/*", "common/*", "leetcode/*"]
+members = ["experiments/*", "common/*", "leetcode/*"]
