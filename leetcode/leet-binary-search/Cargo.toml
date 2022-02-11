@@ -1,0 +1,9 @@
+# https://leetcode.com/problems/binary-search/
+
+[package]
+name = "leet-binary-search"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+leet = { path = "../../common/leet" }
