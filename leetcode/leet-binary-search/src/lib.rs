@@ -35,14 +35,18 @@ leet::setup!(
     tests = [
         (
             case_found_1,
-            given = (vec![-1, 0, 3, 5, 9, 12], 9),
-            expects = 4
+            given = (Vec::from([-1, 0, 3, 5, 9, 12]), 9),
+            should_return = 4
         ),
-        (case_found_2, given = (vec![2, 5], 2), expects = 0),
+        (
+            case_found_2,
+            given = (Vec::from([2, 5]), 2),
+            should_return = 0
+        ),
         (
             case_not_found,
-            given = (vec![-1, 0, 3, 5, 9, 12], 2),
-            expects = -1
+            given = (Vec::from([-1, 0, 3, 5, 9, 12]), 2),
+            should_return = -1
         ),
     ]
 );

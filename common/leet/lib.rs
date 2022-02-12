@@ -1,7 +1,7 @@
 #[macro_export]
 macro_rules! setup {
     ( $main_name:ident, tests = [
-        $( ( $test_name:ident, given = ( $($input:expr),* ), expects = $output:expr ) ),* $(,)?
+        $( ( $test_name:ident, given = ($($input:expr),*), should_return = $output:expr ) ),* $(,)?
     ] ) => {
         pub struct Solution;
 
