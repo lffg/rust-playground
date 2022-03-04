@@ -11,6 +11,10 @@ name = "binary-search-index"
 version = "0.1.0"
 
 [[package]]
+name = "collatz-toctou"
+version = "0.1.0"
+
+[[package]]
 name = "iter-freq"
 version = "0.1.0"
 
