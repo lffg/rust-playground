@@ -14,7 +14,6 @@ enum Command {
 }
 
 fn main() {
-    // Main channel to pass commands.
     let (b_cmd_sender, a_recv) = channel();
     let c_cmd_sender = b_cmd_sender.clone();
 
@@ -45,7 +44,6 @@ fn main() {
     });
 
     let b = spawn(move || {
-        // Channel to receive the fetched number.
         let (tx, rx) = channel();
 
         println!("[b] Sending fetch command...");
@@ -60,10 +58,9 @@ fn main() {
         } else {
             Command::CollatzAsOdd
         };
-        println!("[b] With i as {fetched_i}, decided to run collatz with {collatz_cmd:?}");
+        println!("[b] With i as {fetched_i}, decided to run collatz with {collatz_cmd:?}.");
         b_cmd_sender.send(collatz_cmd).unwrap();
         println!("[b] Done.");
-        drop(b_cmd_sender);
     });
 
     let c = spawn(move || {
@@ -73,7 +70,6 @@ fn main() {
         c_cmd_sender.send(Command::Incr).unwrap();
 
         println!("[c] Done.");
-        drop(c_cmd_sender);
     });
 
     a.join().unwrap();
