@@ -27,17 +27,6 @@ name = "iter-with-last"
 version = "0.1.0"
 
 [[package]]
-name = "leet"
-version = "0.1.0"
-
-[[package]]
-name = "leet-binary-search"
-version = "0.1.0"
-dependencies = [
- "leet",
-]
-
-[[package]]
 name = "multi-test"
 version = "0.1.0"
 
