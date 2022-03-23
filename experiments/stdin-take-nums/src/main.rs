@@ -4,7 +4,7 @@ fn main() {
     let xs: Vec<i32> = io::stdin()
         .lock()
         .lines()
-        .flat_map(IntoIterator::into_iter)
+        .flatten()
         .flat_map(|str| {
             str.split_ascii_whitespace()
                 .flat_map(str::parse)
