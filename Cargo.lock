@@ -39,5 +39,9 @@ name = "stack-overflow"
 version = "0.1.0"
 
 [[package]]
+name = "stdin-take-nums"
+version = "0.1.0"
+
+[[package]]
 name = "string-builder"
 version = "0.1.0"
