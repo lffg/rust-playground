@@ -7,6 +7,10 @@ name = "ast-visitor-etc"
 version = "0.1.0"
 
 [[package]]
+name = "bin-alarms"
+version = "0.1.0"
+
+[[package]]
 name = "binary-search-index"
 version = "0.1.0"
 
