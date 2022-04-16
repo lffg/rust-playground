@@ -31,6 +31,10 @@ name = "iter-with-last"
 version = "0.1.0"
 
 [[package]]
+name = "lc-int-a"
+version = "0.1.0"
+
+[[package]]
 name = "multi-test"
 version = "0.1.0"
 
