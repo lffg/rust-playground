@@ -31,7 +31,7 @@ name = "iter-with-last"
 version = "0.1.0"
 
 [[package]]
-name = "lc-int-a"
+name = "lambda-int1"
 version = "0.1.0"
 
 [[package]]
