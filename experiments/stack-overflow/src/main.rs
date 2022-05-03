@@ -1,3 +1,4 @@
+#[allow(unconditional_recursion)]
 fn rec(val: u64) {
     let addr = &val;
     println!("{addr:p} (is {val})");
