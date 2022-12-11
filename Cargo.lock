@@ -39,6 +39,10 @@ name = "lambda-int1"
 version = "0.1.0"
 
 [[package]]
+name = "lang-parens"
+version = "0.1.0"
+
+[[package]]
 name = "lib-and-main-ex1"
 version = "0.1.0"
 
