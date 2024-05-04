@@ -31,6 +31,10 @@ name = "check-brackets"
 version = "0.1.0"
 
 [[package]]
+name = "cidr"
+version = "0.1.0"
+
+[[package]]
 name = "collatz-toctou"
 version = "0.1.0"
 
