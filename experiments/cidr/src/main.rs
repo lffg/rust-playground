@@ -12,7 +12,12 @@ fn main() {
     println!("Network size:    {}", cidr.network_size());
     println!("Network ID:      {}", cidr.network_id());
     println!("Broadcast:       {}", cidr.broadcast());
-    println!("Next network ID: {}", cidr.next_network_id());
+    println!(
+        "Next network ID: {}",
+        cidr.next_network_id()
+            .map(|s| s.to_string())
+            .unwrap_or_else(|| "N/A".to_string())
+    );
     println!("First host:      {}", cidr.first_host());
     println!("Last host:       {}", cidr.last_host());
 }
@@ -45,6 +50,10 @@ impl CidrV4 {
         32 - (self.prefix as u32)
     }
 
+    fn network_range(&self) -> u32 {
+        self.network_size() - 1
+    }
+
     pub fn network_size(&self) -> u32 {
         2_u32.pow(self.host_bit_count())
     }
@@ -62,11 +71,13 @@ impl CidrV4 {
     }
 
     pub fn broadcast(&self) -> Ipv4Addr {
-        (self.id_bits() + self.network_size() - 1).into()
+        (self.id_bits() + self.network_range()).into()
     }
 
-    pub fn next_network_id(&self) -> Ipv4Addr {
-        (self.id_bits() + self.network_size()).into()
+    pub fn next_network_id(&self) -> Option<Ipv4Addr> {
+        self.id_bits()
+            .checked_add(self.network_size())
+            .map(Into::into)
     }
 
     pub fn first_host(&self) -> Ipv4Addr {
@@ -74,7 +85,7 @@ impl CidrV4 {
     }
 
     pub fn last_host(&self) -> Ipv4Addr {
-        (self.id_bits() + self.network_size() - 2).into()
+        (self.id_bits() + self.network_range() - 1).into()
     }
 }
 
@@ -110,7 +121,7 @@ mod tests {
         network_size: u32,
         network_id: Ipv4Addr,
         broadcast: Ipv4Addr,
-        next_network_id: Ipv4Addr,
+        next_network_id: Option<Ipv4Addr>,
         first_host: Ipv4Addr,
         last_host: Ipv4Addr,
     }
@@ -123,7 +134,7 @@ mod tests {
                 network_size: 8,
                 network_id: Ipv4Addr::from([10, 1, 1, 32]),
                 broadcast: Ipv4Addr::from([10, 1, 1, 39]),
-                next_network_id: Ipv4Addr::from([10, 1, 1, 40]),
+                next_network_id: Some(Ipv4Addr::from([10, 1, 1, 40])),
                 first_host: Ipv4Addr::from([10, 1, 1, 33]),
                 last_host: Ipv4Addr::from([10, 1, 1, 38]),
             },
@@ -132,9 +143,18 @@ mod tests {
                 network_size: 32,
                 network_id: Ipv4Addr::from([10, 2, 2, 64]),
                 broadcast: Ipv4Addr::from([10, 2, 2, 95]),
-                next_network_id: Ipv4Addr::from([10, 2, 2, 96]),
+                next_network_id: Some(Ipv4Addr::from([10, 2, 2, 96])),
                 first_host: Ipv4Addr::from([10, 2, 2, 65]),
                 last_host: Ipv4Addr::from([10, 2, 2, 94]),
+            },
+            Case {
+                cidr: "213.50.111.222/2",
+                network_size: 1_073_741_824,
+                network_id: Ipv4Addr::from([192, 0, 0, 0]),
+                broadcast: Ipv4Addr::from([255, 255, 255, 255]),
+                next_network_id: None,
+                first_host: Ipv4Addr::from([192, 0, 0, 1]),
+                last_host: Ipv4Addr::from([255, 255, 255, 254]),
             },
         ];
 
